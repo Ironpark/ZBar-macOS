@@ -43,7 +43,7 @@ jobs:
 
     - name: Prepare
       run: |
-        brew install --universal libtool
+        brew install libtool --universal
         brew install gettext autoconf automake libiconv \
                     gs graphicsmagick python xmlto pkg-config ccache
         brew unlink libtool && brew link libtool
