@@ -56,7 +56,6 @@ jobs:
         CFLAGS: "-target arm64-apple-macos11"
         LDFLAGS: "-arch arm64"
       run: |
-        autoreconf -vfi
         ./configure --disable-video --without-python --without-gtk --without-qt --without-x --without-imagemagick --prefix="$(pwd)/build"
         make install
         zip -r mac-arm64.zip build -x "*.DS_Store"
