@@ -26,7 +26,16 @@ jobs:
       id: checkout
       uses: actions/checkout@v3
 
-    - name: Clone Zbar
+    - name: Clone Zbar (with tag)
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/checkout@v3
+      with:
+        repository: 'mchehab/zbar'
+        tag: ${{github.ref_name}}
+        path: 'zbar'
+    
+    - name: Clone Zbar (without tag)
+      if: "!startsWith(github.ref, 'refs/tags/')"
       uses: actions/checkout@v3
       with:
         repository: 'mchehab/zbar'
@@ -69,3 +78,9 @@ jobs:
       with:
         name: zbar
         path: ${{ github.workspace }}/zbar/*.zip
+    - name: Upload release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+          ${{ github.workspace }}/zbar/*.zip
