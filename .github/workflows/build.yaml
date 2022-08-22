@@ -66,7 +66,7 @@ jobs:
         CFLAGS: "-target arm64-apple-macos11"
         LDFLAGS: "-arch arm64"
       run: |
-        ./configure --disable-video --without-python --without-gtk --without-qt --without-x --without-imagemagick --prefix="$(pwd)/build-arm" --enable-shared --host=arm64-apple-macos11 --enable-static --without-xshm
+        ./configure --disable-video --without-python --without-gtk --without-qt --without-x --without-imagemagick --prefix="$(pwd)/build-arm" --enable-shared --enable-static --without-xshm
         make install
         zip -r mac-arm64.zip build-arm -x "*.DS_Store"
         make clean
