@@ -56,7 +56,7 @@ jobs:
         LDFLAGS: "-arch x86_64"
       run: |
         autoreconf -vfi
-        ./configure --disable-video --without-python --without-gtk --without-qt --without-x --without-imagemagick --prefix="$(pwd)/build-x86" --enable-shared --enable-static
+        ./configure --disable-video --without-python --without-gtk --without-qt --without-x --without-imagemagick --prefix="$(pwd)/build-x86" --enable-shared --enable-static --without-xshm
         make install
         zip -r mac-x86_64.zip build-x86 -x "*.DS_Store"
         make clean
@@ -66,7 +66,7 @@ jobs:
         CFLAGS: "-target arm64-apple-macos11"
         LDFLAGS: "-arch arm64"
       run: |
-        ./configure --disable-video --without-python --without-gtk --without-qt --without-x --without-imagemagick --prefix="$(pwd)/build-arm" --enable-shared --host=arm64-apple-macos11 --enable-static
+        ./configure --disable-video --without-python --without-gtk --without-qt --without-x --without-imagemagick --prefix="$(pwd)/build-arm" --enable-shared --host=arm64-apple-macos11 --enable-static --without-xshm
         make install
         zip -r mac-arm64.zip build-arm -x "*.DS_Store"
         make clean
