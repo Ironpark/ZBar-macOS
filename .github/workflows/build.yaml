@@ -43,7 +43,7 @@ jobs:
 
     - name: Prepare
       run: |
-        brew install libtool --universal
+        brew install libtool
         brew install gettext autoconf automake libiconv \
                     gs graphicsmagick python xmlto pkg-config ccache
         brew unlink libtool && brew link libtool
@@ -62,6 +62,7 @@ jobs:
         make clean
     - name: Configure / Build (Apple Silicon)
       working-directory: ${{ github.workspace }}/zbar
+      LDFLAGS: "-arch arm64"
       run: |
         ./configure --disable-video --without-python --without-gtk --without-qt --without-x --without-imagemagick --prefix="$(pwd)/build-arm" --enable-shared --host=arm64-apple-macos11 --enable-static
         make install
