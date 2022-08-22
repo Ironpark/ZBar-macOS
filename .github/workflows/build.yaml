@@ -39,7 +39,7 @@ jobs:
         brew unlink libtool && brew link libtool
         brew unlink gettext && brew link gettext
     
-    - name: Configure
+    - name: Configure / Build (x86_64)
       working-directory: ${{ github.workspace }}/zbar
       env:
         CFLAGS: "-target x86_64-apple-macos10.12"
@@ -47,3 +47,22 @@ jobs:
       run: |
         autoreconf -vfi
         ./configure --disable-video --without-python --without-gtk --without-qt --without-x --without-imagemagick --prefix="$(pwd)/build"
+        make install
+        zip -r mac-x86_64.zip build -x "*.DS_Store"
+        make clean
+    - name: Configure / Build (Apple Silicon)
+      working-directory: ${{ github.workspace }}/zbar
+      env:
+        CFLAGS: "-target arm64-apple-macos11"
+        LDFLAGS: "-arch arm64"
+      run: |
+        autoreconf -vfi
+        ./configure --disable-video --without-python --without-gtk --without-qt --without-x --without-imagemagick --prefix="$(pwd)/build"
+        make install
+        zip -r mac-arm64.zip build -x "*.DS_Store"
+        make clean
+    
+    - uses: actions/upload-artifact@v2
+      with:
+        name: zbar
+        path: ${{ github.workspace }}/zbar/*.zip
