@@ -72,8 +72,8 @@ jobs:
       run: |
         mkdir build-univeral
         mkdir build-univeral/lib
-        lipo -create -arch arm64 ${{ github.workspace }}/zbar/build-arm/lib/libzbar.dylib -arch x86_64 ${{ github.workspace }}/zbar/build-arm/lib/libzbar.dylib -output build-univeral/lib/libzbar.dylib
-        lipo -create -arch arm64 ${{ github.workspace }}/zbar/build-arm/lib/libzbar.a -arch x86_64 ${{ github.workspace }}/zbar/build-arm/lib/libzbar.a -output build-univeral/lib/libzbar.a
+        lipo -create -arch arm64 ${{ github.workspace }}/zbar/build-arm/lib/libzbar.dylib -arch x86_64 ${{ github.workspace }}/zbar/build-x86/lib/libzbar.dylib -output build-univeral/lib/libzbar.dylib
+        lipo -create -arch arm64 ${{ github.workspace }}/zbar/build-arm/lib/libzbar.a -arch x86_64 ${{ github.workspace }}/zbar/build-x86/lib/libzbar.a -output build-univeral/lib/libzbar.a
         cp -r ${{ github.workspace }}/zbar/build-arm/include ${{ github.workspace }}/zbar/build-univeral/include
         zip -r mac-univeral.zip build-univeral -x "*.DS_Store"
     - uses: actions/upload-artifact@v2
