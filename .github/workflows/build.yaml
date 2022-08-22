@@ -52,11 +52,8 @@ jobs:
         make clean
     - name: Configure / Build (Apple Silicon)
       working-directory: ${{ github.workspace }}/zbar
-      env:
-        CFLAGS: "-target arm64-apple-macos11"
-        LDFLAGS: "-arch arm64"
       run: |
-        ./configure --disable-video --without-python --without-gtk --without-qt --without-x --without-imagemagick --prefix="$(pwd)/build"
+        ./configure --disable-video --without-python --without-gtk --without-qt --without-x --without-imagemagick --prefix="$(pwd)/build" --host=arm64-apple-macos11
         make install
         zip -r mac-arm64.zip build -x "*.DS_Store"
         make clean
