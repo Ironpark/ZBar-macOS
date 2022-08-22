@@ -63,6 +63,7 @@ jobs:
     - name: Configure / Build (Apple Silicon)
       working-directory: ${{ github.workspace }}/zbar
       env:
+        CFLAGS: "-target arm64-apple-macos11"
         LDFLAGS: "-arch arm64"
       run: |
         ./configure --disable-video --without-python --without-gtk --without-qt --without-x --without-imagemagick --prefix="$(pwd)/build-arm" --enable-shared --host=arm64-apple-macos11 --enable-static
