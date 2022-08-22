@@ -46,18 +46,25 @@ jobs:
         LDFLAGS: "-arch x86_64"
       run: |
         autoreconf -vfi
-        ./configure --disable-video --without-python --without-gtk --without-qt --without-x --without-imagemagick --prefix="$(pwd)/build"
+        ./configure --disable-video --without-python --without-gtk --without-qt --without-x --without-imagemagick --prefix="$(pwd)/build-x86"
         make install
-        zip -r mac-x86_64.zip build -x "*.DS_Store"
+        zip -r mac-x86_64.zip build-x86 -x "*.DS_Store"
         make clean
     - name: Configure / Build (Apple Silicon)
       working-directory: ${{ github.workspace }}/zbar
       run: |
-        ./configure --disable-video --without-python --without-gtk --without-qt --without-x --without-imagemagick --prefix="$(pwd)/build" --host=arm64-apple-macos11
+        ./configure --disable-video --without-python --without-gtk --without-qt --without-x --without-imagemagick --prefix="$(pwd)/build-arm" --host=arm64-apple-macos11
         make install
-        zip -r mac-arm64.zip build -x "*.DS_Store"
+        zip -r mac-arm64.zip build-arm -x "*.DS_Store"
         make clean
-    
+    - name: Create Universal Binary
+      working-directory: ${{ github.workspace }}/zbar
+      run: |
+        mkdir build-univeral
+        lipo -create -arch arm64 ${{ github.workspace }}/build-arm/libzbar.dylib -arch x86_64 ${{ github.workspace }}/build-arm/libzbar.dylib -output build-univeral/libzbar.dylib
+        lipo -create -arch arm64 ${{ github.workspace }}/build-arm/libzbar.a -arch x86_64 ${{ github.workspace }}/build-arm/libzbar.a -output build-univeral/libzbar.a
+        cp -r ${{ github.workspace }}/build-arm/include ${{ github.workspace }}/build-univeral/include
+        zip -r mac-univeral.zip build-univeral -x "*.DS_Store"
     - uses: actions/upload-artifact@v2
       with:
         name: zbar
